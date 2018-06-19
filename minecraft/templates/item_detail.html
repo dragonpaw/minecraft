@@ -1,0 +1,137 @@
+{% extends "base.html" %} {% block title %}{{item.name}} — Detail{% endblock %} {% block content %}
+<h1>{{item.name}}</h1>
+<div class="row">
+    {# INGREDIENTS ------------------------------------------------- #}    
+    <div class="col-md-6">
+        <table class="table {% if ingredients %}table-striped{% endif %} table-hover">
+            <thead class="thead-dark text-center">
+                <tr>
+                    <th colspan="2">Ingredients{% if item.batch_size > 1%} (To make
+                        <strong>{{item.batch_size}}</strong>){% endif %}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if ingredients %}
+                <tr>
+                    <th>Item</th>
+                    <th class="text-right">Quantity</th>
+                </tr>
+                {% endif %}
+                {% for i in ingredients %}
+                <tr {% if i.quantity == 0 %}class="alert-info"{% endif %}>
+                    <td>
+                        <a href="{{i.item.get_absolute_url}}">{{i.item}}</a>
+                    </td>
+                    <td class="text-right">{{i.quantity}}</td>
+                </tr>
+                {% empty %}
+                <tr class="alert-info">
+                    <td colspan="2">Gathered resource</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {# RAW MATERIALS ----------------------------------------------- #}
+    <div class="col-md-6">
+        <table class="table {% if materials %}table-striped{% endif %} table-hover">
+            <thead class="thead-dark text-center">
+                <tr>
+                    <th colspan="2">Raw Materials{%if item.batch_size > 1 %} (EACH){% endif %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if materials %}
+                <tr class="table-secondary">
+                    <th>Item</th>
+                    <th class="text-right">Quantity</th>
+                </tr>
+                {% endif %}
+                {% for item, qty in materials %}
+                <tr {% if qty == 0 %}class="alert-info" {% endif %}>
+                    <td>
+                        <a href="{{item.get_absolute_url}}">{{ item }}</a>
+                    </td>
+                    <td class="text-right">{{ qty|floatformat:-2 }}</td>
+                </tr>
+                {% empty %}
+                <tr class="alert-info">
+                    <td colspan="2">Gathered resource</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {# USES -------------------------------------------------------- #}
+    <div class="col-md-6">
+        <table class="table {% if uses %}table-striped{% endif %} table-hover">
+            <thead class="thead-dark text-center">
+                <tr>
+                    <th colspan="2">Used in</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if uses %}
+                <tr>
+                    <th>Item</th>
+                    <th class="text-right">Quantity</th>
+                </tr>
+                {% endif %}
+                {% for i in uses %}
+                <tr>
+                    <td>
+                        <a href="{{i.makes.get_absolute_url}}">{{i.makes}}</a>
+                    </td>
+                    <td class="text-right">{{i.quantity_each|floatformat:2}}</td>
+                </tr>
+                {% empty %}
+                <tr class="alert-info">
+                    <td colspan="2">No known uses</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    
+    {# INTERMEDITARY MATERIALS ------------------------------------- #}    
+    <div class="col-md-6">
+        <table class="table {% if intermediates %}table-striped{% endif %} table-hover">
+            <thead class="thead-dark text-center">
+                <tr>
+                    <th colspan="2">Intermeditary Materials{%if item.batch_size > 1 %} (EACH){% endif %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if intermediates %}
+                <tr class="table-secondary">
+                    <th>Item</th>
+                    <th class="text-right">Quantity</th>
+                </tr>
+                {% endif %}
+                {% for item, qty in intermediates %}
+                <tr {% if qty == 0 %}class="alert-info" {% endif %}>
+                    <td>
+                        <a href="{{item.get_absolute_url}}">{{ item }}</a>
+                    </td>
+                    <td class="text-right">{{ qty|floatformat:-2 }}</td>
+                </tr>
+                {% empty %}
+                <tr class="alert-info">
+                    {% if materials %}
+                    <td colspan="2">None</td>
+                    {% else %}
+                    <td colspan="2">Gathered resource</td>
+                    {% endif %}                    
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}

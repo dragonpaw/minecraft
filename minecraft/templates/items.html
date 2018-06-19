@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block head %}
+<style>
+    @media only screen and (min-width: 768px) {
+        /* tablets and desktop */
+        div#content {
+            -webkit-column-count: 4;
+            -moz-column-count: 4;
+            column-count: 4;
+            
+            -webkit-column-gap: 20px;
+            -moz-column-gap: 20px;
+            column-gap: 20px;
+        }
+    }
+</style>
+{% endblock %}
+{% block content %}
+<div class=""></div>
+<ul>
+{% for i in items %}
+    {% ifchanged %}</ul><h2>{{ i.name|first }}</h2><ul>{% endifchanged %}
+    <li><a href="{{i.get_absolute_url}}">{{ i }}</a></li>
+{% endfor %}
+</ul>
+</div>
+{% endblock %}
