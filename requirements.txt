@@ -5,7 +5,7 @@
 #     pip3.6 install -t lib/python3.6 -r requirements.txt
 #     ~/webapps/minecraft/apache2/bin/restart
 
-Django==2.0.6
+Django==2.0.12
 django-extensions
 django-markdown-deux
 ipython
